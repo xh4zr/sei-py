@@ -1,7 +1,7 @@
-# sei-py
+# sei_py
 A Caveon SEI helper library
 
-```
+```python
 import sei_py
 
 client = sei_py.create_client_with_context(SEI_ID, SEI_SECRET, SEI_EXAM_ID, SEI_ROLE_SECRET)
