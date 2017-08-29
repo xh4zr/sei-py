@@ -1,10 +1,11 @@
 import json
 import urllib
+import sei_py.base
 
 
 class ExamAPI(object):
     def __init__(self, http_context, exam_id):
-        self._base_url = 'http://localhost:5000/api/exams/{exam_id}'.format(exam_id=exam_id)
+        self._base_url = '{api_url}/exams/{exam_id}'.format(api_url=sei_py.base.UrlProvider.getApi(), exam_id=exam_id)
         self._http_context = http_context
 
     def _gen_query_string(self, params):
@@ -55,6 +56,6 @@ class ExamAPI(object):
         settings['launchpads'] = launchpads
         new_settings = self.put_settings(settings)
         exam['settings'] = new_settings
-        return 'http://localhost:5000/launchpad/{slug}/{name}' \
-            .format(slug=exam.get('slug'), \
+        return '{launchpad_url}/{slug}/{name}' \
+            .format(launchpad_url=sei_py.base.UrlProvider.getLaunchpad(), slug=exam.get('slug'), \
             name=urllib.parse.quote(launchpad_json.get('name').lower()))

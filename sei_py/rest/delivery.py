@@ -5,10 +5,9 @@ import sei_py.base
 
 class DeliveryAPI(object):
     def __init__(self, http_context, exam_id):
-        self._base_url = 'http://localhost:5000/api/exams/{exam_id}/deliveries' \
-            .format(exam_id=exam_id)
+        self._base_url = '{api_url}/exams/{exam_id}/deliveries' \
+            .format(api_url=sei_py.base.UrlProvider.getApi(), exam_id=exam_id)
         self._http_context = http_context
-        self._exam_id = exam_id
 
     def _gen_query_string(self, params):
         query = []
@@ -48,7 +47,8 @@ class DeliveryAPI(object):
         res = self._http_context.get('{base_url}/{delivery_id}/get_launch_token' \
             .format(base_url=self._base_url, delivery_id=delivery_id))
         token = res.json().get('launch_token')
-        return 'http://localhost:5000/take?launch_token={token}'.format(token=token)
+        return '{take_url}?launch_token={token}' \
+            .format(take_url=sei_py.base.UrlProvider.getTake(), token=token)
 
     def get_proctor_url(self, **kwargs):
         delivery_id = kwargs.get('delivery_id')
@@ -57,7 +57,8 @@ class DeliveryAPI(object):
         res = self._http_context.get('{base_url}/{delivery_id}/get_proctor_token' \
             .format(base_url=self._base_url, delivery_id=delivery_id))
         token = res.json().get('proctor_token')
-        return 'http://localhost:5000/proctor/{token}'.format(token=token)
+        return '{proctor_url}/{token}' \
+            .format(proctor_url=sei_py.base.UrlProvider.getProctor(), token=token)
 
     def create(self, delivery_json={}):
         if delivery_json == {}:

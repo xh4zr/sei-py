@@ -6,6 +6,7 @@ class SeiClient(object):
     def __init__(self, http_context, exam_id):
         self.exam = sei_py.rest.ExamAPI(http_context, exam_id)
         self.delivery = sei_py.rest.DeliveryAPI(http_context, exam_id)
+        self.item = sei_py.rest.ItemAPI(http_context, exam_id)
 
 
 def create_client_with_context(username, password, exam_id, role_secret):
