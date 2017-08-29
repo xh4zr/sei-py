@@ -52,8 +52,8 @@ class ItemAPI(object):
             'version_number': version_number
         }
         res = self._http_context.post('{base_url}/{item_id}/activate_version' \
-            .format(base_url=self._base_url, item_id=item_id, \
-            data=json.dumps(payload), headers={'content-type': 'application/json'}))
+            .format(base_url=self._base_url, item_id=item_id), \
+            data=json.dumps(payload), headers={'content-type': 'application/json'})
         if res.status_code < 400:
             return True
         return False
@@ -71,7 +71,7 @@ class ItemAPI(object):
         is_new = kwargs.pop('is_new', False)
         item_id = kwargs.pop('item_id')
 
-        if item_id or is_new:
+        if item_id:
             item_json = kwargs.pop('item_json')
             query_string = self._gen_query_string(kwargs)
             res = self._http_context.put('{base_url}/{item_id}{query}' \
