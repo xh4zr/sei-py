@@ -84,7 +84,7 @@ class ItemAPI(object):
     def bulk_update(self, **kwargs):
         payload = {
             'field': kwargs.get('field'),
-            'items': kwargs.get('items_to_update')
+            'items': kwargs.get('items')
         }
         res = self._http_context.post('{base_url}/bulk_update' \
             .format(base_url=self._base_url), \
