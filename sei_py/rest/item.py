@@ -69,9 +69,9 @@ class ItemAPI(object):
 
     def save(self, **kwargs):
         is_new = kwargs.pop('is_new', False)
-        item_id = kwargs.pop('item_id')
+        item_id = kwargs.pop('item_id', None)
 
-        if item_id:
+        if item_id is not None:
             item_json = kwargs.pop('item_json')
             query_string = self._gen_query_string(kwargs)
             res = self._http_context.put('{base_url}/{item_id}{query}' \
