@@ -25,7 +25,13 @@ class ItemAPI(object):
         query_string = self._gen_query_string(kwargs)
         res = self._http_context.get('{base_url}/{item_id}{query}' \
             .format(base_url=self._base_url, item_id=item_id, query=query_string))
-        return res.json()
+        res_json = res.json()
+
+        if res.status_code >= 400:
+            raise sei_py.base.exception.SeiException( \
+                res.status_code, res_json.get('messages', []))
+
+        return res_json
 
     def list(self, **kwargs):
         kwargs['page'] = kwargs.get('page', 1)
@@ -33,10 +39,15 @@ class ItemAPI(object):
 
         query_string = self._gen_query_string(kwargs)
 
-        response = self._http_context.get('{base_url}{query}' \
+        res = self._http_context.get('{base_url}{query}' \
             .format(base_url=self._base_url, query=query_string))
-        res = response.json()
-        return sei_py.base.Page(res.get('results'), res.get('total'), \
+        res_json = res.json()
+
+        if res.status_code >= 400:
+            raise sei_py.base.exception.SeiException( \
+                res.status_code, res_json.get('messages', []))
+
+        return sei_py.base.Page(res_json.get('results'), res_json.get('total'), \
             kwargs.get('page'), kwargs.get('per_page'))
 
     def make_live(self, **kwargs):
@@ -65,7 +76,13 @@ class ItemAPI(object):
         res = self._http_context.post('{base_url}{query}' \
             .format(base_url=self._base_url, query=query_string), \
             data=json.dumps(item_json), headers={'content-type': 'application/json'})
-        return res.json()
+        res_json = res.json()
+
+        if res.status_code >= 400:
+            raise sei_py.base.exception.SeiException( \
+                res.status_code, res_json.get('messages', []))
+
+        return res_json
 
     def save(self, **kwargs):
         is_new = kwargs.pop('is_new', False)
@@ -77,7 +94,13 @@ class ItemAPI(object):
             res = self._http_context.put('{base_url}/{item_id}{query}' \
                 .format(base_url=self._base_url, item_id=item_id, query=query_string), \
                 data=json.dumps(item_json), headers={'content-type': 'application/json'})
-            return res.json()
+            res_json = res.json()
+
+            if res.status_code >= 400:
+                raise sei_py.base.exception.SeiException( \
+                    res.status_code, res_json.get('messages', []))
+
+            return res_json
         else:
             return self.create(kwargs)
 
@@ -89,4 +112,10 @@ class ItemAPI(object):
         res = self._http_context.post('{base_url}/bulk_update' \
             .format(base_url=self._base_url), \
             data=json.dumps(payload), headers={'content-type': 'application/json'})
-        return res.json()
+        res_json = res.json()
+
+        if res.status_code >= 400:
+            raise sei_py.base.exception.SeiException( \
+                res.status_code, res_json.get('messages', []))
+
+        return res_json

@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name = 'sei_py',
     packages = ['sei_py', 'sei_py.base', 'sei_py.rest'],
-    version = '0.1.6',
+    version = '0.1.7',
     description = 'A Caveon SEI helper library',
     author = 'Evan Anderson',
     author_email = 'evan.anderson@caveon.com',
