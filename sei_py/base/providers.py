@@ -28,7 +28,7 @@ class UrlProvider(object):
             UrlProvider._launchpad = 'http://localhost:5000/launchpad'
 
         if env == 'stage':
-            UrlProvider._api = 'https://sei-stage.herokuap.com/api'
+            UrlProvider._api = 'https://sei-stage.herokuapp.com/api'
             UrlProvider._take = 'https://sei-stage.herokuapp.com/take'
             UrlProvider._proctor = 'https://sei-stage.herokuapp.com/proctor'
             UrlProvider._launchpad = 'https://sei-stage.herokuapp.com/launchpad'
