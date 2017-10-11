@@ -58,4 +58,8 @@ class IntegrationAPI(object):
                 False, errors)
         else:
             res = requests.get(url, auth=requests.auth.HTTPBasicAuth(username, password))
-            return res.json()
+            res_json = res.json()
+            if res.status_code >= 400:
+                raise sei_py.base.exception.SeiException( \
+                    res.status_code, res_json.get('messages', []))
+            return res_json
