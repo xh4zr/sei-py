@@ -9,21 +9,9 @@ class DeliveryAPI(object):
             .format(api_url=sei_py.base.UrlProvider.getApi(), exam_id=exam_id)
         self._http_context = http_context
 
-    def _gen_query_string(self, params):
-        query = []
-        first = True
-        for key, value in params.items():
-            if first:
-                symbol = '?'
-                first = False
-            else:
-                symbol = '&'
-
-            query.append('{symbol}{key}={value}'.format(symbol=symbol, key=key, value=value))
-        return ''.join(query)
-
-    def get(self, delivery_id, **kwargs):
-        query_string = self._gen_query_string(kwargs)
+    def get(self, **kwargs):
+        delivery_id = kwargs.pop('delivery_id')
+        query_string = sei_py.helpers.generate_query_string(kwargs)
         res = self._http_context.get('{base_url}/{delivery_id}{query}' \
             .format(base_url=self._base_url, delivery_id=delivery_id, query=query_string))
         return res.json()
@@ -32,7 +20,7 @@ class DeliveryAPI(object):
         kwargs['page'] = kwargs.get('page', 1)
         kwargs['per_page'] = kwargs.get('per_page', 30)
 
-        query_string = self._gen_query_string(kwargs)
+        query_string = sei_py.helpers.generate_query_string(kwargs)
 
         response = self._http_context.get('{base_url}{query}' \
             .format(base_url=self._base_url, query=query_string))

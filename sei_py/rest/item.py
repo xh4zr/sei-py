@@ -1,5 +1,6 @@
 import json
 import sei_py.base
+import sei_py.helpers
 
 
 class ItemAPI(object):
@@ -8,21 +9,9 @@ class ItemAPI(object):
             .format(api_url=sei_py.base.UrlProvider.getApi(), exam_id=exam_id)
         self._http_context = http_context
 
-    def _gen_query_string(self, params):
-        query = []
-        first = True
-        for key, value in params.items():
-            symbol = '&'
-            if first:
-                symbol = '?'
-                first = False
-
-            query.append('{symbol}{key}={value}'.format(symbol=symbol, key=key, value=value))
-        return ''.join(query)
-
     def get(self, **kwargs):
         item_id = kwargs.pop('item_id')
-        query_string = self._gen_query_string(kwargs)
+        query_string = sei_py.helpers.generate_query_string(kwargs)
         res = self._http_context.get('{base_url}/{item_id}{query}' \
             .format(base_url=self._base_url, item_id=item_id, query=query_string))
         res_json = res.json()
@@ -37,7 +26,7 @@ class ItemAPI(object):
         kwargs['page'] = kwargs.get('page', 1)
         kwargs['per_page'] = kwargs.get('per_page', 30)
 
-        query_string = self._gen_query_string(kwargs)
+        query_string = sei_py.helpers.generate_query_string(kwargs)
 
         res = self._http_context.get('{base_url}{query}' \
             .format(base_url=self._base_url, query=query_string))
@@ -71,7 +60,7 @@ class ItemAPI(object):
 
     def create(self, kwargs):
         item_json = kwargs.pop('item_json')
-        query_string = self._gen_query_string(kwargs)
+        query_string = sei_py.helpers.generate_query_string(kwargs)
 
         res = self._http_context.post('{base_url}{query}' \
             .format(base_url=self._base_url, query=query_string), \
@@ -90,7 +79,7 @@ class ItemAPI(object):
 
         if item_id is not None:
             item_json = kwargs.pop('item_json')
-            query_string = self._gen_query_string(kwargs)
+            query_string = sei_py.helpers.generate_query_string(kwargs)
             res = self._http_context.put('{base_url}/{item_id}{query}' \
                 .format(base_url=self._base_url, item_id=item_id, query=query_string), \
                 data=json.dumps(item_json), headers={'content-type': 'application/json'})

@@ -1,6 +1,7 @@
 import json
 import urllib
 import sei_py.base
+import sei_py.helpers
 
 
 class ExamAPI(object):
@@ -8,20 +9,8 @@ class ExamAPI(object):
         self._base_url = '{api_url}/exams/{exam_id}'.format(api_url=sei_py.base.UrlProvider.getApi(), exam_id=exam_id)
         self._http_context = http_context
 
-    def _gen_query_string(self, params):
-        query = []
-        first = True
-        for key, value in params.items():
-            symbol = '&'
-            if first:
-                symbol = '?'
-                first = False
-
-            query.append('{symbol}{key}={value}'.format(symbol=symbol, key=key, value=value))
-        return ''.join(query)
-
     def get(self, **kwargs):
-        query_string = self._gen_query_string(kwargs)
+        query_string = sei_py.helpers.generate_query_string(kwargs)
         res = self._http_context.get('{base}{query}' \
             .format(base=self._base_url, query=query_string))
         return res.json()
@@ -31,7 +20,7 @@ class ExamAPI(object):
         if exam_json.get('settings'):
             include.append('settings')
 
-        query_string = self._gen_query_string({'include': ','.join(include)})
+        query_string = sei_py.helpers.generate_query_string({'include': ','.join(include)})
 
         res = self._http_context.put('{base}{query}' \
             .format(base=self._base_url, query=query_string), \
