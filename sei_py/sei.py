@@ -38,9 +38,9 @@ def create_client_with_basic_auth(username, password, exam_id, role_secret):
 def create_client(**kwargs):
     integration_info = sei_py.rest.IntegrationAPI.static_get(**kwargs)
 
-    return create_client_with_token(**integration_info)
+    return create_client_with_integration(**integration_info)
 
-def create_client_with_token(**kwargs):
+def create_client_with_integration(**kwargs):
     token = kwargs.get('token')
     exam_id = kwargs.pop('exam_id')
 
