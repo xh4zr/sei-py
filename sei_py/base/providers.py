@@ -20,7 +20,7 @@ class UrlProvider(object):
     def getLaunchpad():
         return UrlProvider._launchpad
 
-    def set_env(self, env):
+    def set_env(self, env, **kwargs):
         if env == 'local':
             UrlProvider._api = 'http://localhost:5000/api'
             UrlProvider._take = 'http://localhost:4000'
@@ -32,3 +32,10 @@ class UrlProvider(object):
             UrlProvider._take = 'https://sei-stage.herokuapp.com/take'
             UrlProvider._proctor = 'https://sei-stage.herokuapp.com/proctor'
             UrlProvider._launchpad = 'https://sei-stage.herokuapp.com/launchpad'
+
+        if env == 'custom':
+            # throws key error if not including everything
+            UrlProvider._api = kwargs['api']
+            UrlProvider._take = kwargs['take']
+            UrlProvider._proctor = kwargs['proctor']
+            UrlProvider._launchpad = kwargs['launchpad']
