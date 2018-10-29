@@ -10,5 +10,5 @@ setup(
     author_email = 'evan.anderson@caveon.com',
     url = 'https://github.com/xh4zr/sei-py',
     keywords = ['caveon', 'sei', 'exam', 'test security'],
-    install_requires = ['requests==2.18.4', 'python_jwt==2.0.2']
+    install_requires = ['requests==2.20.0', 'python_jwt==2.0.2']
 )
